@@ -154,11 +154,19 @@
     var wrap = el("div", "progress-wrap"); wrap.appendChild(bar); wrap.appendChild(lab); s.appendChild(wrap);
     requestAnimationFrame(function () { fill.style.width = pct + "%"; });
 
+    api("records", { year: b.year }).then(function (r) {
+      // Count every entry here so the chart matches the sheet's row count, whichever Code.gs version is deployed.
+      var counts = {};
+      r.records.forEach(function (x) { counts[x.level] = (counts[x.level] || 0) + 1; });
+      drawLevels(b, counts);
+    }).catch(function () { drawLevels(b, b.counts); });
+  }
+  function drawLevels(b, counts) {
     var L = $("#levels"); L.textContent = "";
-    var max = Math.max.apply(null, b.levels.map(function (l) { return b.counts[l] || 0; }).concat(1));
+    var max = Math.max.apply(null, b.levels.map(function (l) { return counts[l] || 0; }).concat(1));
     var total = 0;
     b.levels.forEach(function (l, i) {
-      var n = b.counts[l] || 0; total += n;
+      var n = counts[l] || 0; total += n;
       var row = el("a", "lvl" + (l === "Haafiz" ? " gold" : "")); row.href = "#records"; row.style.setProperty("--i", i);
       row.addEventListener("click", function () { $("#rec-level").value = l; });
       row.appendChild(el("span", "lvl-name", l));
