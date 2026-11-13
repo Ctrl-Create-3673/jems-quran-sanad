@@ -35,7 +35,7 @@
     adminLogin: function (q) { if (q.password !== "demo") fail("Wrong admin password."); var tok = Math.random().toString(36).slice(2); sessions[tok] = { role: "admin", name: "Admin", id: "ADMIN" }; keep(); return { token: tok, user: sessions[tok] }; },
     bootstrap: function () {
       var latest = {}; db.records.filter(function (r) { return r.year === YEAR; }).forEach(function (r) { latest[r.its] = r; });
-      var counts = {}; Object.keys(latest).forEach(function (k) { counts[latest[k].level] = (counts[latest[k].level] || 0) + 1; });
+      var counts = {}; db.records.filter(function (r) { return r.year === YEAR; }).forEach(function (r) { counts[r.level] = (counts[r.level] || 0) + 1; });
       return { year: YEAR, levels: LEVELS, classes: classes, counts: counts, stats: { students: students.length, teachers: db.teachers.length, updated: Object.keys(latest).length, entries: db.records.length } };
     },
     students: function (q) {

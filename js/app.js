@@ -164,11 +164,11 @@
       row.appendChild(el("span", "lvl-name", l));
       var t = el("span", "lvl-track"), f = el("span", "lvl-fill"); t.appendChild(f); row.appendChild(t);
       row.appendChild(el("span", "lvl-n", String(n)));
-      row.setAttribute("aria-label", l + ": " + n + " students, show records");
+      row.setAttribute("aria-label", l + ": " + n + " entries, show records");
       L.appendChild(row);
       requestAnimationFrame(function () { f.style.width = (n / max * 100) + "%"; });
     });
-    $("#level-total").textContent = total + " students";
+    $("#level-total").textContent = total + (total === 1 ? " entry" : " entries");
   }
 
   /* ---------- entry: step 1 find ---------- */

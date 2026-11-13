@@ -152,8 +152,9 @@ const ACTIONS = {
     const records = readRecords().filter(r => r.year === HIJRI_YEAR);
     const latest = {};
     records.forEach(r => { latest[r.its] = r; }); // later rows win
+    // Level chart counts every entry (repeat entries included) so it matches the sheet's row count.
     const counts = {};
-    Object.keys(latest).forEach(its => { const l = latest[its].level; counts[l] = (counts[l] || 0) + 1; });
+    records.forEach(r => { counts[r.level] = (counts[r.level] || 0) + 1; });
     const classes = Array.from(new Set(students.map(s => s.cls).filter(Boolean))).sort();
     const teachers = Math.max(0, sheet("Teacher Data").getLastRow() - 1);
     return { year: HIJRI_YEAR, levels: LEVELS, classes: classes, counts: counts,
